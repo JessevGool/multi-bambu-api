@@ -36,5 +36,19 @@ public class PrinterCameraController {
                             .body(frameData);
                 });
     }
-    
+
+    @GetMapping("/camera-frame-resized")
+    public CompletableFuture<ResponseEntity<byte[]>> getResizedCameraFrame(@PathVariable UUID id) {
+        return printerRuntimeService.getResizedCameraFrame(id)
+                .thenApply(frameData -> {
+                    if (frameData == null) {
+                        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+                    }
+
+                    return ResponseEntity.ok()
+                            .contentType(MediaType.IMAGE_JPEG)
+                            .body(frameData);
+                });
+    }
 }
+

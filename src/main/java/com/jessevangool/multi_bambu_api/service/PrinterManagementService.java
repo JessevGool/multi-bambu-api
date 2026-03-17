@@ -22,7 +22,7 @@ public class PrinterManagementService {
 
     @Async
     public CompletableFuture<PrinterResponse> addPrinter(String hostname, String accessCode, String serial) {
-        if (printerRepository.existsBySerialOrHostname(serial, hostname)) {
+        if (printerRepository.existsBySerial(serial) || printerRepository.existsByHostname(hostname)) {
             throw new IllegalArgumentException("Printer with hostname or serial already exists");
         }
 
