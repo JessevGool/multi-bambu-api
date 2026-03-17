@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.jessevangool.multi_bambu_api.dto.response.PrinterResponse;
+import com.jessevangool.multi_bambu_api.dto.response.UpdatePrinterResponse;
 import com.jessevangool.multi_bambu_api.entity.PrinterEntity;
 import com.jessevangool.multi_bambu_api.repository.PrinterRepository;
 
@@ -21,8 +22,8 @@ public class PrinterManagementService {
 
     @Async
     public CompletableFuture<PrinterResponse> addPrinter(String hostname, String accessCode, String serial) {
-        if (printerRepository.findByHostname(hostname) != null) {
-            throw new IllegalArgumentException("Printer with hostname already exists");
+        if (printerRepository.existsBySerialOrHostname(serial, hostname)) {
+            throw new IllegalArgumentException("Printer with hostname or serial already exists");
         }
 
         PrinterEntity printer = new PrinterEntity();
@@ -51,6 +52,27 @@ public class PrinterManagementService {
                 .map(this::toResponse)
                 .toList();
         return CompletableFuture.completedFuture(printers);
+    }
+
+    @Async
+    public CompletableFuture<UpdatePrinterResponse> updatePrinter(UUID id, String hostname, String accessCode, String serial) {
+        PrinterEntity printer = printerRepository.findById(id).orElse(null);
+        if (printer == null) {
+            return CompletableFuture.completedFuture(new UpdatePrinterResponse(id, false, "Printer not found"));
+        }
+
+        if (hostname != null && !hostname.isBlank() && !hostname.equals(printer.getHostname())) {
+            printer.setHostname(hostname);
+        }
+        if (accessCode != null && !accessCode.isBlank() && !accessCode.equals(printer.getAccessCode())) {
+            printer.setAccessCode(accessCode);
+        }
+        if (serial != null && !serial.isBlank() && !serial.equals(printer.getSerial())) {
+            printer.setSerial(serial);
+        }
+
+        PrinterEntity updated = printerRepository.save(printer);
+        return CompletableFuture.completedFuture(new UpdatePrinterResponse(updated.getId(), true, "Printer updated successfully"));
     }
 
     private PrinterResponse toResponse(PrinterEntity entity) {

@@ -10,4 +10,7 @@ import com.jessevangool.multi_bambu_api.entity.PrinterEntity;
 @Repository
 public interface PrinterRepository extends JpaRepository<PrinterEntity, UUID> {
     PrinterEntity findByHostname(String hostname);
+    PrinterEntity findBySerial(String serial);
+    boolean existsBySerialOrHostname(String serial, String hostname);
+
 }
