@@ -49,7 +49,7 @@ public class PrinterManagementController {
 
     @PutMapping("/update/{id}")
     public CompletableFuture<UpdatePrinterResponse> updatePrinter(@PathVariable UUID id, @RequestBody UpdatePrinterRequest request) {
-        return printerManagementService.updatePrinter(id, request.hostname(), request.accessCode(), request.serial());
+        return printerManagementService.updatePrinter(id, request.name(),request.hostname(), request.accessCode(), request.serial());
     }
     
 }

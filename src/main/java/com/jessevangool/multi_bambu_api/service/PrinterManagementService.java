@@ -55,7 +55,7 @@ public class PrinterManagementService {
     }
 
     @Async
-    public CompletableFuture<UpdatePrinterResponse> updatePrinter(UUID id, String hostname, String accessCode, String serial) {
+    public CompletableFuture<UpdatePrinterResponse> updatePrinter(UUID id, String name,String hostname, String accessCode, String serial) {
         PrinterEntity printer = printerRepository.findById(id).orElse(null);
         if (printer == null) {
             return CompletableFuture.completedFuture(new UpdatePrinterResponse(id, false, "Printer not found"));
@@ -70,12 +70,15 @@ public class PrinterManagementService {
         if (serial != null && !serial.isBlank() && !serial.equals(printer.getSerial())) {
             printer.setSerial(serial);
         }
+        if (name != null && !name.isBlank() && !name.equals(printer.getName())) {
+            printer.setName(name);
+        }
 
         PrinterEntity updated = printerRepository.save(printer);
         return CompletableFuture.completedFuture(new UpdatePrinterResponse(updated.getId(), true, "Printer updated successfully"));
     }
 
     private PrinterResponse toResponse(PrinterEntity entity) {
-        return new PrinterResponse(entity.getId(), entity.getHostname(), entity.getSerial());
+        return new PrinterResponse(entity.getId(), entity.getName(), entity.getHostname(), entity.getSerial());
     }
 }

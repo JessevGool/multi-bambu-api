@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.jessevangool.multi_bambu_api.converter.EncryptedStringConverter;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +21,11 @@ public class PrinterEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column(nullable = true)
+    @Convert(converter = EncryptedStringConverter.class)
+    private String name;
+
     @Convert(converter = EncryptedStringConverter.class)
     private String hostname;
 
