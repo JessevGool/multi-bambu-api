@@ -1,0 +1,22 @@
+name: Build and Push
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  docker:
+    uses: JessevGool/github-workflows/.github/workflows/docker-build-push.yml@main
+    with:
+      registry: ${{ vars.REGISTRY }}
+      app_name: multi-bambu-api
+      version_prefix: "1.0"
+      platforms: linux/amd64,linux/arm64
+      dockerfile: ./Dockerfile
+      context: .
+      push_latest: true
+    secrets:
+      TS_OAUTH_CLIENT_ID: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+      TS_OAUTH_CLIENT_SECRET: ${{ secrets.TS_OAUTH_CLIENT_SECRET }}
+      REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}

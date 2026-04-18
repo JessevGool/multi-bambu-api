@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,12 +51,17 @@ public class PrinterController {
         return printerRuntimeService.getPrintPercentage(id);
     }
 
+    @GetMapping("/remaining-time")
+    public CompletableFuture<ResponseMessage<Integer>> getRemainingTime(@PathVariable UUID id) {
+        return printerRuntimeService.getRemainingTime(id);
+    }
+
     @GetMapping("/get-fan-speed")
     public CompletableFuture<ResponseMessage<Integer>> getFanSpeed(@PathVariable UUID id,@Min(1) @Max(3) @RequestParam int fanIndex) {
         return printerRuntimeService.getFanSpeed(id, fanIndex);
     }
 
-    @GetMapping("/led-light-state")
+    @PostMapping("/led-light-state")
     public CompletableFuture<Boolean> setLedLightState(@PathVariable UUID id, @RequestParam boolean on) {
         return printerRuntimeService.setLedLightState(id, on);
     }

@@ -79,6 +79,17 @@ public class PrinterRuntimeService {
     }
 
     @Async
+    public CompletableFuture<ResponseMessage<Integer>> getRemainingTime(UUID id) {
+        try {
+            var client = getPrinterClient(id);
+            int remainingTime = client.getRemainingPrintTime();
+            return CompletableFuture.completedFuture(new ResponseMessage<>(true, remainingTime));
+        } catch (Exception e) {
+            return CompletableFuture.failedFuture(e);
+        }
+    }
+
+    @Async
     public CompletableFuture<ResponseMessage<Double>> getBedTemperature(UUID id) {
         try {
             var client = getPrinterClient(id);
