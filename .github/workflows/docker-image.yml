@@ -6,7 +6,7 @@ on:
 
 jobs:
   docker:
-    uses: JessevGool/github-workflows/.github/workflows/docker-build-push.yml@main
+    uses: JessevGool/workflows/.github/workflows/docker-build-push.yml@main
     with:
       registry: ${{ vars.REGISTRY }}
       app_name: multi-bambu-api
