@@ -9,5 +9,4 @@ services:
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
     ports:
-      - "8080:8080"
-
+      - "42091:8080"
