@@ -4,7 +4,7 @@ setlocal EnableExtensions
 set "VERSION=%~1"
 if "%VERSION%"=="" set "VERSION=1.0.0"
 
-set "REGISTRY=homelab:5000"
+set "REGISTRY=docker-host:5000"
 set "IMAGE_NAME=multi-bambu-api"
 set "IMAGE=%REGISTRY%/%IMAGE_NAME%"
 set "PLATFORMS=linux/amd64,linux/arm64"
