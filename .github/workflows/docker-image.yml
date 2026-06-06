@@ -21,3 +21,13 @@ jobs:
       REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
       REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
       REGISTRY_CA_CRT: ${{ secrets.REGISTRY_CA_CRT }}
+
+  deploy:
+    needs: docker
+    uses: JessevGool/workflows/.github/workflows/redeploy-portainer-stack.yml@main
+    with:
+      tailscale_ping_host: docker-host
+      stack_name: multi-bambu-api
+      compose_file: docker-compose.yml
+      registry: ${{ vars.REGISTRY }}
+    secrets: inherit
